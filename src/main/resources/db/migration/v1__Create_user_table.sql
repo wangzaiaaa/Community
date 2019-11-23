@@ -1,0 +1,13 @@
+create table USER
+(
+  ID           INTEGER default (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_C38E32C0_7D3C_4075_B998_C970A6D9A18B) auto_increment,
+  ACCOUNT_ID   VARCHAR(100),
+  NAME         VARCHAR(50),
+  TOKEN        CHAR,
+  GMT_CREATE   BIGINT,
+  COLUMN_6     INTEGER,
+  GMT_MODIFIED BIGINT,
+  BIO          VARCHAR(256),
+  constraint USER_PK
+    primary key (ID)
+);
