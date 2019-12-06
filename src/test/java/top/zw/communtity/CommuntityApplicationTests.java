@@ -9,11 +9,5 @@ import top.zw.communtity.mapper.UserMapper;
 @SpringBootTest
 class CommuntityApplicationTests {
 
-    @Autowired
-    private QuestionMapper mapper;
-    @Test
-    void contextLoads() {
-        System.out.println(mapper.count());
-    }
 
 }
