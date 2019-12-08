@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.zw.communtity.dto.PaginationDTO;
 import top.zw.communtity.dto.QuestionDTO;
+import top.zw.communtity.exception.CustomizeErrorCode;
+import top.zw.communtity.exception.CustomizeException;
+import top.zw.communtity.mapper.QuestionExtMapper;
 import top.zw.communtity.mapper.QuestionMapper;
 import top.zw.communtity.mapper.UserMapper;
 import top.zw.communtity.model.Question;
@@ -23,6 +26,9 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -103,6 +109,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question == null){
+            throw new CustomizeException("你找的问题不存在了，要不换个试试");
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         UserExample userExample = new UserExample();
@@ -127,7 +136,18 @@ public class QuestionService {
             questionUpdate.setTag(question.getTag());
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(questionUpdate,example);
+            int upodated = questionMapper.updateByExampleSelective(questionUpdate,example);
+            if(upodated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND.getMessage());
+            }
         }
+    }
+
+    public void inView(Integer id) {
+        Question record = new Question();
+        record.setId(id);
+        record.setViewCount(1);
+        questionExtMapper.incView(record);
+
     }
 }
