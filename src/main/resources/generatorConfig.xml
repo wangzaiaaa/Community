@@ -39,5 +39,10 @@
 
         </table>
 
+        <table schema="community" tableName="comment" domainObjectName="Comment" >
+
+        </table>
+
+
     </context>
 </generatorConfiguration>

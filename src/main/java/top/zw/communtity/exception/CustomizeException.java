@@ -2,17 +2,20 @@ package top.zw.communtity.exception;
 
 public class CustomizeException extends RuntimeException{
     private String message;
+    private Integer code;
 
-    public CustomizeException(String message){
-        this.message = message;
+    public CustomizeException(ICustomizeErrorCode errorCode){
+        this.message = errorCode.getMessage();
+        this.code = errorCode.getCode();
     }
 
-    public CustomizeException(CustomizeErrorCode customizeErrorCode){
-        this.message = customizeErrorCode.getMessage();
-    }
 
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }
